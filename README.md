@@ -1,2 +1,2 @@
 # GC-OneClickLogin
-GreaseMonkey-Skript OneClickLogin für geocaching.ocm
+GreaseMonkey-Skript OneClickLogin für geocaching.com
