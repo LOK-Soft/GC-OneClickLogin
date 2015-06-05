@@ -1,3 +1,5 @@
+#GC-OneClickLogin
+
 This Script adds an Login-DropDown-Box to the geocaching.com site.
 
 ![LogInBox](http://l0k.de/gm/gc1click-1.jpg)
