@@ -1,4 +1,4 @@
-// Copyright (C) 2011 by LOK-Soft Lars-Olof Krause http://lok-soft.net
+// Copyright (C) 2011-2015 by LOK-Soft Lars-Olof Krause http://lok-soft.net
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
