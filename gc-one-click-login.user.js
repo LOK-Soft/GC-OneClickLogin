@@ -17,14 +17,17 @@
 // @exclude        */map/*
 // @exclude        */membership/*
 // @exclude        */reviews/*
+// @grant          GM_registerMenuCommand
+// @grant          GM_getValue
+// @grant          GM_setValue
 // @description    Adds OneClick-Login-Box to GC, several Account can be saved, saving PW is optional
-// @version        0.3
+// @version        0.4
 // ==/UserScript==
 
-GM_log = function(){};
+//console.log = function(){};
 
 //Initial Log-Message
-  GM_log("GC-OneClickLogin activate");
+  console.log("GC-OneClickLogin activate");
 
 //register GM-Menu
   GM_registerMenuCommand('GC-OneClickLogin - Clear all Data', GCAclearData);
@@ -35,21 +38,21 @@ GM_log = function(){};
   var gckmsi = new Array();
 
   function loadGMdata(){
-    GM_log("GC-Autologin loadGMdata");
+    console.log("GC-Autologin loadGMdata");
 
     var gcusers_str = "##!##" + GM_getValue('gcuser');
     var gcpasswords_str = "##!##" + GM_getValue('gcpass');
     var gckmsi_str = "##!##" + GM_getValue('gckmsi');
-    GM_log("GC-OneClickLogin received Data");
+    console.log("GC-OneClickLogin received Data");
 
     gcusers = gcusers_str.split("##!##");
     gcpasswords = gcpasswords_str.split("##!##");
     gckmsi = gckmsi_str.split("##!##");
-    GM_log("GC-OneClickLogin splitted Data");
+    console.log("GC-OneClickLogin splitted Data");
     gcusers.splice(0,1);
     gcpasswords.splice(0,1);
     gckmsi.splice(0,1);
-    GM_log("GC-OneClickLogin removed unused data");
+    console.log("GC-OneClickLogin removed unused data");
   }
 
 
@@ -58,12 +61,12 @@ GM_log = function(){};
 //Check URL
   var loc = String(document.location);
   if(loc.indexOf("/login/") != -1){
-    GM_log("GC-OneClickLogin: on /login/");
+    console.log("GC-OneClickLogin: on /login/");
     if(document.getElementById('ctl00_ContentBody_LoggedInPanel')){
-      GM_log("GC-OneClickLogin: loggedin");
+      console.log("GC-OneClickLogin: loggedin");
       GCAloggedin();
     }else if(document.getElementById('ctl00_ContentBody_LoginPanel')){
-      GM_log("GC-OneClickLogin: not loggedin");
+      console.log("GC-OneClickLogin: not loggedin");
 
       var loginform = document.getElementById('ctl00_ContentBody_LoginPanel').getElementsByTagName("dl")[0];
       var usrdt = document.createElement("dt");
@@ -76,22 +79,22 @@ GM_log = function(){};
 
       loginform.insertBefore(usrdt, loginform.getElementsByTagName("dt")[0]);
       loginform.insertBefore(usrdd, loginform.getElementsByTagName("dt")[0].nextSibling);
-      GM_log("GC-OneClickLogin: Added Dropdown");
+      console.log("GC-OneClickLogin: Added Dropdown");
       GCAaddListener();
 
     }else{
-      GM_log("GC-OneClickLogin: Login-Box not found o.O");
+      console.log("GC-OneClickLogin: Login-Box not found o.O");
     }
 
   }else{ //not on /login/
-    GM_log("GC-OneClickLogin: not on /login/"); 
+    console.log("GC-OneClickLogin: not on /login/"); 
 
     //Check if User is Loggedin
     if(document.getElementById('ctl00_divSignedIn')){
-      GM_log("GC-OneClickLogin: loggedin"); 
+      console.log("GC-OneClickLogin: loggedin"); 
       GCAloggedin();
     }else if(document.getElementById('ctl00_divNotSignedIn')){
-      GM_log("GC-OneClickLogin: not loggedin");
+      console.log("GC-OneClickLogin: not loggedin");
       var signinbox = document.getElementById('SignInWidget');
       var dropp = document.createElement("p");
 
@@ -106,19 +109,19 @@ GM_log = function(){};
 
       var dropdown = GCAcreateUserDropdown();
       dropp.appendChild(dropdown);
-      signinbox.insertBefore(dropp, signinbox.getElementsByTagName("p")[0]);
-      GM_log("GC-OneClickLogin: Added Dropdown");
+      signinbox.insertBefore(dropp, document.getElementById("ctl00_vsSignInWidgetForm"));
+      console.log("GC-OneClickLogin: Added Dropdown");
       GCAaddListener();
 
     }else{
-      GM_log("GC-OneClickLogin: Login-Box not found o.O"); 
+      console.log("GC-OneClickLogin: Login-Box not found o.O"); 
     }
 
   }
 
 
   function GCAcreateUserDropdown(){
-    GM_log("GC-OneClickLogin: create dropdown");
+    console.log("GC-OneClickLogin: create dropdown");
     var dropdown = document.createElement("select");
     dropdown.id = "GCAutoSelect";
     var stdselect = document.createElement("option");
@@ -136,7 +139,7 @@ GM_log = function(){};
 
 
   function GCAaddListener(){
-    GM_log("GC-OneClickLogin: addListener");
+    console.log("GC-OneClickLogin: addListener");
 
     var element = document.getElementById('GCAutoSelect');
     if( element.addEventListener )
@@ -148,12 +151,12 @@ GM_log = function(){};
  }
 
   function GCAfilloutLogin(){
-    GM_log("GC-OneClickLogin: User selected");
+    console.log("GC-OneClickLogin: User selected");
     var userid = document.getElementById('GCAutoSelect').value;
-    GM_log("GC-OneClickLogin: Userid - "+userid);
+    console.log("GC-OneClickLogin: Userid - "+userid);
     var loc = String(document.location);
     if(loc.indexOf("/login/") != -1){
-      GM_log("GC-OneClickLogin: Login - Form");
+      console.log("GC-OneClickLogin: Login - Form");
       document.getElementById("ctl00_ContentBody_tbUsername").value = gcusers[userid];
       if(GCAgetuserkmsi(userid) == "1"){
         document.getElementById("ctl00_ContentBody_cbRememberMe").checked = true;
@@ -163,7 +166,7 @@ GM_log = function(){};
         simulateClick(document.getElementById("ctl00_ContentBody_btnSignIn"));
       }
     }else{
-      GM_log("GC-OneClickLogin: Login - Box");
+      console.log("GC-OneClickLogin: Login - Box");
       document.getElementById("ctl00_tbUsername").value = gcusers[userid];
       if(GCAgetuserkmsi(userid) == "1"){
         document.getElementById("ctl00_cbRememberMe").checked = true;
@@ -177,7 +180,7 @@ GM_log = function(){};
   }
 
   function simulateClick(button) {
-    GM_log("GC-OneClickLogin: Simulate Click");
+    console.log("GC-OneClickLogin: Simulate Click");
     var evt = document.createEvent("MouseEvents");
     evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
     button.dispatchEvent(evt);
@@ -187,7 +190,7 @@ GM_log = function(){};
 
   function GCAloggedin(){
     if(GCAuser_exists(GCAgetactualuser())){
-      GM_log("GC-OneClickLogin: AddMenu-Entry 'remove'"); 
+      console.log("GC-OneClickLogin: AddMenu-Entry 'remove'"); 
       GM_registerMenuCommand('GC-OneClickLogin - remove Account', GCAremoveAccount);
       var remaccount = document.createElement('a');
       remaccount.id = "GCA_remaccount";
@@ -196,8 +199,9 @@ GM_log = function(){};
       remaccount.style.paddingLeft = "5px";
       remaccount.style.cursor = "pointer";
       remaccount.style.textDecoration = "none";
+      remaccount.style.fontSize = "25px";
       remaccount.innerHTML = "-";
-      document.getElementById("ctl00_divSignedIn").getElementsByTagName("strong")[0].appendChild(remaccount);
+      document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(remaccount);
       addClkListener(document.getElementById('GCA_remaccount'), GCAremoveAccount);
 
       if(GCAgetuserpass(GCAgetactualuserid()) == '?'){
@@ -209,11 +213,11 @@ GM_log = function(){};
         addpass.style.cursor = "pointer";
         addpass.style.textDecoration = "none";
         addpass.innerHTML = "p";
-        document.getElementById("ctl00_divSignedIn").getElementsByTagName("strong")[0].appendChild(addpass);
+        document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(addpass);
         addClkListener(document.getElementById('GCA_addpass'), GCAaddPass);
       }
     }else{
-      GM_log("GC-OneClickLogin: AddMenu-Entry 'add account'"); 
+      console.log("GC-OneClickLogin: AddMenu-Entry 'add account'"); 
       GM_registerMenuCommand('GC-OneClickLogin - add Account', GCAaddAccount);
       var addaccount = document.createElement('a');
       addaccount.id = "GCA_addaccount";
@@ -222,11 +226,12 @@ GM_log = function(){};
       addaccount.style.paddingLeft = "5px";
       addaccount.style.cursor = "pointer";
       addaccount.style.textDecoration = "none";
+      addaccount.style.fontSize = "25px";
       addaccount.innerHTML = "+";
-      document.getElementById("ctl00_divSignedIn").getElementsByTagName("strong")[0].appendChild(addaccount);
+      document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(addaccount);
       addClkListener(document.getElementById('GCA_addaccount'), GCAaddAccount);
     }
-    GM_log("GC-OneClickLogin: AddMenu-Entry 'set pass'"); 
+    console.log("GC-OneClickLogin: AddMenu-Entry 'set pass'"); 
     GM_registerMenuCommand('GC-OneClickLogin - set Password', GCAaddPass);
   }
 
@@ -251,9 +256,9 @@ function addClkListener(element, fkt){
 
 
   function GCAaddAccount(){
-    GM_log("GC-OneClickLogin: addAccount");
+    console.log("GC-OneClickLogin: addAccount");
     var gcuser = GCAgetactualuser();
-    GM_log("GC-OneClickLogin: addAccount - is loggedin as " + gcuser);
+    console.log("GC-OneClickLogin: addAccount - is loggedin as " + gcuser);
     if(GCAuser_exists(gcuser)){
       alert("GC-OneClickLogin: User '" + gcuser + "' exists already!");
     }else{
@@ -267,7 +272,7 @@ function addClkListener(element, fkt){
     gcpasswords.push("?");
     GCAsaveusers();
     alert("Account added");
-    GM_log("GC-OneClickLogin: addAccount - successfull");
+    console.log("GC-OneClickLogin: addAccount - successfull");
     var userid = GCAgetuserid(username)
     if(confirm('Do you want to loggin with the option "Keep Me Signed In"?')){
       gckmsi[userid] = 1;
@@ -279,7 +284,7 @@ function addClkListener(element, fkt){
 
 
   function GCAaddPass(){
-    GM_log("GC-OneClickLogin: addPass");
+    console.log("GC-OneClickLogin: addPass");
     var userid = GCAgetactualuserid();
     if(userid > -1){
       var pass_promt = prompt('Please enter your password');
@@ -300,7 +305,7 @@ function addClkListener(element, fkt){
 
 
   function GCAremoveAccount(){
-    GM_log("GC-OneClickLogin: removeAccount");
+    console.log("GC-OneClickLogin: removeAccount");
     var userid = GCAgetactualuserid();
     if(userid > -1){
       GCAremoveUser(userid);
@@ -310,7 +315,7 @@ function addClkListener(element, fkt){
   }
 
   function GCAgetactualuser(){
-    return document.getElementById("ctl00_divSignedIn").getElementsByTagName("strong")[0].getElementsByTagName("a")[0].innerHTML;
+    return document.getElementById("ctl00_divSignedIn").getElementsByTagName("span")[1].getElementsByTagName("span")[0].innerHTML;
   }
 
   function GCAgetactualuserid(){
