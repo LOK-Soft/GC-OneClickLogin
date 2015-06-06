@@ -21,10 +21,11 @@
 // @grant          GM_getValue
 // @grant          GM_setValue
 // @description    Adds OneClick-Login-Box to GC, several Account can be saved, saving PW is optional
-// @version        0.4
+// @downloadURL    https://github.com/LOK-Soft/GC-OneClickLogin/raw/master/gc-one-click-login.user.js
+// @version        0.5
 // ==/UserScript==
 
-//console.log = function(){};
+console.log = function(){};
 
 //Initial Log-Message
   console.log("GC-OneClickLogin activate");
@@ -192,43 +193,38 @@
     if(GCAuser_exists(GCAgetactualuser())){
       console.log("GC-OneClickLogin: AddMenu-Entry 'remove'"); 
       GM_registerMenuCommand('GC-OneClickLogin - remove Account', GCAremoveAccount);
+      var remli = document.createElement('li');
       var remaccount = document.createElement('a');
       remaccount.id = "GCA_remaccount";
       remaccount.title = "GC-OneClickLogin - remove Account";
-      remaccount.style.color = "#ff162b";
-      remaccount.style.paddingLeft = "5px";
       remaccount.style.cursor = "pointer";
-      remaccount.style.textDecoration = "none";
-      remaccount.style.fontSize = "25px";
-      remaccount.innerHTML = "-";
-      document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(remaccount);
+      remaccount.innerHTML = "remove OneClickLogin";
+      remli.appendChild(remaccount);
+      document.getElementById("ctl00_divSignedIn").getElementsByTagName("ul")[1].appendChild(remli);
       addClkListener(document.getElementById('GCA_remaccount'), GCAremoveAccount);
 
       if(GCAgetuserpass(GCAgetactualuserid()) == '?'){
+    	var addpli = document.createElement('li');
         var addpass = document.createElement('a');
         addpass.id = "GCA_addpass";
         addpass.title = "GC-OneClickLogin - add Password";
-        addpass.style.color = "#ffdc17";
-        addpass.style.paddingLeft = "5px";
         addpass.style.cursor = "pointer";
-        addpass.style.textDecoration = "none";
-        addpass.innerHTML = "p";
-        document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(addpass);
+        addpass.innerHTML = "add OneClickLogin Password";
+        addpli.appendChild(addpass);
+        document.getElementById("ctl00_divSignedIn").getElementsByTagName("ul")[1].appendChild(addpli);
         addClkListener(document.getElementById('GCA_addpass'), GCAaddPass);
       }
     }else{
       console.log("GC-OneClickLogin: AddMenu-Entry 'add account'"); 
       GM_registerMenuCommand('GC-OneClickLogin - add Account', GCAaddAccount);
+      var addali = document.createElement('li');
       var addaccount = document.createElement('a');
       addaccount.id = "GCA_addaccount";
       addaccount.title = "GC-OneClickLogin - add Account";
-      addaccount.style.color = "#67d91b";
-      addaccount.style.paddingLeft = "5px";
       addaccount.style.cursor = "pointer";
-      addaccount.style.textDecoration = "none";
-      addaccount.style.fontSize = "25px";
-      addaccount.innerHTML = "+";
-      document.getElementById("ctl00_divSignedIn").getElementsByTagName("li")[0].appendChild(addaccount);
+      addaccount.innerHTML = "add OneClickLogin";
+      addali.appendChild(addaccount);
+      document.getElementById("ctl00_divSignedIn").getElementsByTagName("ul")[1].appendChild(addali);
       addClkListener(document.getElementById('GCA_addaccount'), GCAaddAccount);
     }
     console.log("GC-OneClickLogin: AddMenu-Entry 'set pass'"); 
