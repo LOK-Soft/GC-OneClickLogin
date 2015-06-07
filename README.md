@@ -31,3 +31,8 @@ Additionally you can find the option to delete all Account-Data here.
 Script tested on FireFox 38.0.1
 
 Notice: If you save your password with this script it is NOT encrypt. Only do so if you are fine with that.
+
+
+##Installation
+Just click the following link - with greasemonkey installed and running:
+https://github.com/LOK-Soft/GC-OneClickLogin/raw/master/gc-one-click-login.user.js
