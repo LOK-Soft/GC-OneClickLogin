@@ -22,7 +22,7 @@
 // @grant          GM_setValue
 // @description    Adds OneClick-Login-Box to GC, several Account can be saved, saving PW is optional
 // @downloadURL    https://github.com/LOK-Soft/GC-OneClickLogin/raw/master/gc-one-click-login.user.js
-// @version        0.5
+// @version        0.6
 // ==/UserScript==
 
 console.log = function(){};
@@ -355,9 +355,3 @@ function addClkListener(element, fkt){
 	  alert('Data cleared');
     }
   }
-
-
-//Update Check by Jarett (http://userscripts.org/scripts/show/20145)
-var SUC_script_num = 105628; // Change this to the number given to the script by userscripts.org (check the address bar)
-
- GM_registerMenuCommand('GC-OneClickLogin - Check for Updates', function(){updateCheck(true);});
